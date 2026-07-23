@@ -193,35 +193,6 @@ Una spiegazione blocco-per-blocco del codice — pensata per rispondere a domand
 hai implementato la verifica dell'algoritmo?"* in sede di discussione — è disponibile in
 [`cap03_fase1_draft-progressive/spiegazione_codice.txt`](cap03_fase1_draft-progressive/spiegazione_codice.txt).
 
-## Stato di avanzamento e roadmap
-
-La tabella mappa l'intero indice della tesi (10 capitoli) sulla struttura della repository, così
-da rendere esplicito cosa è già stato estratto dai paper **e** verificato con codice/esecuzione
-reale, e cosa è per ora trattato solo teoricamente nel PDF.
-
-| Cap. | Titolo | Cartella | Stato |
-|---|---|---|---|
-| 1 | Il problema del Multiple Sequence Alignment | — | 📖 solo tesi |
-| 2 | MUSCLE: storia e architettura generale | — | 📖 solo tesi |
-| **3** | **Fase 1 — Draft Progressive Alignment** | `cap03_fase1_draft-progressive/` | ✅ **implementato e verificato** |
-| 4 | Fase 2 — Improved Progressive Alignment (correzione di Kimura) | — | 🔜 da aggiungere (`muscle_fase2_verify.py`) |
-| 5 | Fase 3 — Refinement iterativo (Sum-of-Pairs, Anchor Columns) | — | 🔜 da aggiungere (`muscle_fase3_verify.py`) |
-| **6** | **Uso pratico ed esperimenti (validazione con MUSCLE 3.8 reale)** | `cap06_validazione_muscle3.8/` | ✅ **implementato e verificato** |
-| 7 | L'algoritmo MUSCLE5 (§7.7 *"Fase 5 – Progressive Alignment"*) | — | 🔜 da aggiungere |
-| 8 | Super5: estensione scalabile di MUSCLE5 | — | 📖 solo tesi |
-| 9 | Implementazione e test da linea di comando (MUSCLE5 / Super5) | — | 🔜 da aggiungere |
-| 10 | MUSCLE-3D: estensione strutturale di MUSCLE5 | — | 📖 solo tesi |
-
-> **Sulla "Fase 5".** Nell'indice della tesi il numero di capitolo e il numero di "fase" non
-> coincidono sempre: le Fasi 1–3 del Cap. 2.3 corrispondono ai Capp. 3–5, mentre MUSCLE5
-> (Cap. 7) ha una propria numerazione interna a 7 fasi (Pairwise Alignment, Posterior Decoding,
-> Consistency Transformation, Guide Tree, **Fase 5 – Progressive Alignment**, Iterative
-> Refinement, Alignment Ensemble). La sezione §7.7 è quindi il punto della repository in cui
-> replicare, con lo stesso spirito del Cap. 3, l'estrazione delle formule dal paper MUSCLE5
-> (Edgar, 2022 [10]) e il confronto con un'esecuzione reale — ad oggi ancora da aggiungere.
-> Se invece con "fase 5" si intendeva il Cap. 5 (Fase 3 — Refinement), la riga corrispondente
-> nella tabella è quella subito sopra: basta dirlo e aggiorno questa sezione di conseguenza.
-
 ## Riferimenti bibliografici essenziali
 
 L'elenco completo (31 voci) è nella bibliografia della tesi; questi sono i riferimenti diretti
