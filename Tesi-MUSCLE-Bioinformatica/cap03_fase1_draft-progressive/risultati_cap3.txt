@@ -1,0 +1,54 @@
+
+=======================================================
+1. ESTRATTO A MANO (primi 12 residui, Umano vs Cavallo)
+=======================================================
+Umano  [1:12] = MGDVEKGKKIFI
+Cavallo[1:12] = GDVEKGKKIFVQ
+3-meri comuni: ['DVE', 'EKG', 'GDV', 'GKK', 'KGK', 'KIF', 'KKI', 'VEK'] (8 su 10)
+Distanza estratto = 1 - 8/10 = 0.2000
+
+=====================================================
+2. MATRICE DI DISTANZA K-MER (sequenze complete, k=3)
+=====================================================
+D(Umano, Cavallo) = 0.2828
+D(Umano, Lievito) = 0.6800
+D(Cavallo, Lievito) = 0.6869
+
+===================
+3. CLUSTERING UPGMA
+===================
+Coppia piu' vicina: ('Umano', 'Cavallo')  distanza=0.2828
+Altezza fusione 1 = 0.2828/2 = 0.1414
+Distanza media cluster-Lievito = (0.6800 + 0.6869)/2 = 0.6834
+Altezza radice = 0.6834/2 = 0.3417
+Newick: ((Umano:0.1414, Cavallo:0.1414):0.2003, Lievito:0.3417);
+
+========================================================
+4. ALLINEAMENTO PROGRESSIVO (Needleman-Wunsch, BLOSUM62)
+========================================================
+
+Step 1.3: Umano x Cavallo  (score=496.0)
+Umano     MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIWGEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE
+Cavallo   -GDVEKGKKIFVQKCAQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGFTYTDANKNKGITWKEETLMEYLENPKKYIPGTKMIFAGIKKKTEREDLIAYLKKATNE
+
+Step 2.3: profilo(Umano,Cavallo) x Lievito  (score=352.0)
+profilo   -----GDVEKGKKIFVQKCAQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGFTYTDANKNKGITWKEETLMEYLENPKKYIPGTKMIFAGIKKKTEREDLIAYLKKATNE
+Lievito   TEFKAGSAKKGATLFKTRCLQCHTVEKGGPHKVGPNLHGIFGRHSGQAEGYSYTDANIKKNVLWDENNMSEYLTNPKKYIPGTKMAFGGLKKEKDRNDLITYLKKAC-E
+
+=== MSA1 finale (lunghezza 110) ===
+Umano    -----MGDVEKGKKIFIMKCSQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGYSYTAANKNKGIIWGEDTLMEYLENPKKYIPGTKMIFVGIKKKEERADLIAYLKKATNE
+Cavallo  ------GDVEKGKKIFVQKCAQCHTVEKGGKHKTGPNLHGLFGRKTGQAPGFTYTDANKNKGITWKEETLMEYLENPKKYIPGTKMIFAGIKKKTEREDLIAYLKKATNE
+Lievito  TEFKA-GSAKKGATLFKTRCLQCHTVEKGGPHKVGPNLHGIFGRHSGQAEGYSYTDANIKKNVLWDENNMSEYLTNPKKYIPGTKMAFGGLKKEKDRNDLITYLKKAC-E
+
+=====================================================================
+5. IDENTITA' PERCENTUALE DI CONTROLLO (allineamento globale a coppie)
+=====================================================================
+Umano-Cavallo: 92/105 = 87.6% identita'
+Umano-Lievito: 66/109 = 60.6% identita'
+Cavallo-Lievito: 65/109 = 59.6% identita'
+
+==============================================================
+6. COLONNE USATE NELL'ESEMPIO LOG-EXPECTATION (indici 1-based)
+==============================================================
+Colonna 7: Umano=G  Cavallo=G  Lievito=G
+Colonna 17: Umano=I  Cavallo=V  Lievito=K

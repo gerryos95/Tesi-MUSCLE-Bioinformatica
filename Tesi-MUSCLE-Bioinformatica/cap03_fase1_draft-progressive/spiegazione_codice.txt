@@ -1,0 +1,83 @@
+
+Parte 1: Come eseguire il codice e salvare l'output
+
+Assumendo che tu abbia salvato il codice della risposta precedente in un file chiamato muscle_fase1_verify.py, segui questi passi nel terminale (Prompt dei comandi su Windows o Terminale su Mac/Linux):
+
+Installa le dipendenze (se non l'hai già fatto):
+Bash
+pip install biopython
+
+Crea una cartella per i tuoi output:
+Bash
+mkdir output_tesi
+
+Esegui lo script "redirezionando" l'output in un file di testo. L'operatore > prende tutto ciò che verrebbe stampato a schermo e lo salva nel file specificato:
+Bash
+python muscle_fase1_verify.py > output_tesi/risultati_cap3.txt
+
+(Nota: se usi Mac o Linux potresti dover scrivere python3 invece di python).
+Ora, nella cartella output_tesi, avrai un file di testo pulito e formattato, pronto per essere mostrato al professore o incollato in un'appendice!
+
+Parte 2: Spiegazione del codice passo-passo
+
+Se il professore ti chiede: "Come hai implementato la verifica dell'algoritmo?", ecco la spiegazione logica, blocco per blocco.
+
+Blocco 1: Setup e Sequenze
+Python
+from itertools import combinations
+from Bio.Align import substitution_matrices, PairwiseAligner
+
+SEQS = { ... }
+
+Cosa fa: Importa gli strumenti necessari (combinazioni matematiche e gli allineatori di Biopython per l'allineamento a coppie reale) e definisce il dizionario SEQS.
+Il senso: Usiamo le esatte tre sequenze reali (Umano, Cavallo, Lievito) citate nel Capitolo 3 per garantire che i numeri calcolati dal programma siano gli stessi che scriverai nella tesi.
+
+Blocco 2: Calcolo della Distanza K-mer (Sezione 3.1)
+Python
+def kmer_set(seq, k=3):
+    return set(seq[i:i + k] for i in range(len(seq) - k + 1))
+
+def kmer_distance(a, b, k=3):
+    ka, kb = kmer_set(a, k), kmer_set(b, k)
+    common = ka & kb
+    frac_common = len(common) / min(len(ka), len(kb))
+    return 1 - frac_common
+
+Cosa fa: kmer_set fa scorrere una finestra di lunghezza k (qui 3) lungo la sequenza, estraendo tutte le triplette e salvandole in un Set matematico (che elimina i duplicati). kmer_distance calcola l'intersezione tra due set (quanti k-mer hanno in comune) e applica esattamente l'Equazione 1 che abbiamo scritto nella tesi: 1 - (comuni / minimo).
+
+Blocco 3: UPGMA e Costruzione Albero (Sezione 3.2)
+Python
+closest = min(D, key=D.get)
+h1 = D[closest] / 2
+third = [n for n in names if n not in closest][0]
+avg = (get_dist(closest[0], third) + get_dist(closest[1], third)) / 2
+
+Cosa fa: 
+1. Cerca nella matrice di distanza D la coppia con il valore più basso (Umano e Cavallo). 
+2. Crea il primo nodo interno dell'albero a un'altezza pari a D/2 (come prescrive UPGMA). 
+3. Prende la terza sequenza rimasta (Lievito) e calcola la nuova distanza dal cluster Umano/Cavallo facendo la media aritmetica delle distanze originali. 
+4. Stampa l'albero risultante in formato Newick (lo standard bioinformatico per gli alberi filogenetici).
+
+Blocco 4: Allineamento Progressivo e Gestione Profile (Sezione 3.3)
+Questo è il blocco più complesso informaticamente.
+
+Python
+aligner = PairwiseAligner()
+aligner.substitution_matrix = substitution_matrices.load("BLOSUM62")
+...
+aln1 = aligner.align(SEQS[a_name], SEQS[b_name])[0]
+
+Step 1: Allinea Umano e Cavallo usando Needleman-Wunsch (globale) e matrice BLOSUM62. Fin qui è semplice.
+Il problema dei Gap (Gli Orfani): In un allineamento progressivo vige la regola d'oro: "Once a gap, always a gap" (una volta inserito un gap per allineare A e B, quel gap non può mai essere rimosso quando si allinea C).
+
+Cosa fa il codice: Nel ciclo for i, ch in enumerate(horse_aligned):, il programma esamina l'allineamento Umano-Cavallo. Identifica dove sono stati inseriti i gap (i cosiddetti "orfani").
+Step 2 (aln2): Prende la sequenza rappresentativa (Cavallo privato momentaneamente dei gap), e la allinea contro il Lievito.
+Il Merge Finale: Il blocco for col in rep_realigned: fa un rammendo di precisione. Unisce l'allineamento 1 (Umano-Cavallo) con l'allineamento 2 (Profilo-Lievito), re-inserendo fedelmente i gap originali nelle esatte posizioni di prima. Il risultato è un allineamento multiplo (MSA1) perfetto a 3 righe tutte della stessa lunghezza.
+
+Blocco 5: Controlli per il Log-Expectation (Sezione 3.4)
+Python
+for idx in (7, 17):
+    col = tuple(final[name][idx - 1] for name in [a_name, b_name, third])
+
+Cosa fa: Va a pescare nell'allineamento finale MSA1 la colonna 7 (conservata: G/G/G) e la colonna 17 (divergente: I/V/K).
+Il senso: Serve a te per essere sicuro al 100% che i residui che citi nell'esempio numerico del calcolo Log-Expectation nel Capitolo 3 siano effettivamente quelli che si trovano in quelle posizioni nell'allineamento reale. Se il professore andasse a contare i caratteri a mano, troverebbe esattamente le stesse lettere.
